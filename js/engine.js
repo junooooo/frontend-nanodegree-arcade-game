@@ -86,6 +86,7 @@ var Engine = (function(global) {
 
     function checkCollisions() {
         if (ifCollide()) {
+            showTips('Oops! You are bitten by bugs. Try again.');
             reset();
         }
     }
@@ -101,7 +102,7 @@ var Engine = (function(global) {
     }
 
     function ifOverlap(enemy) {
-        return Math.abs(enemy.x - player.x) < 30 && Math.abs(enemy.y - player.y) < 30;
+        return Math.abs(enemy.x - player.x) < 50 && Math.abs(enemy.y - player.y) < 50;
     }
 
     /* This is called by the update function and loops through all of the

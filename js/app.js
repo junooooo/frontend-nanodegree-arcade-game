@@ -1,4 +1,4 @@
-// some contants
+// some constants
 
 var BLOCK_WIDTH = 101;
 var BLOCK_HEIGHT = 83;
@@ -98,6 +98,7 @@ Player.prototype.handleInput = function (direction) {
 };
 
 Player.prototype.onSuccess = function () {
+    showTips('Success!');
     this.init();
     this.score++;
     this.level++;
@@ -115,6 +116,20 @@ Player.prototype.onSuccess = function () {
 
 function updateLevel(level) {
     document.querySelector('.level').textContent = level;
+}
+
+function showTips(tips) {
+    document.querySelector('.modal div').textContent = tips;
+    toggleModal(true);
+    setTimeout(function(){toggleModal(false)}, 1000);
+}
+
+function toggleModal(show) {
+    if (show) {
+        document.querySelector('.modal').removeAttribute('hidden');
+    } else {
+        document.querySelector('.modal').setAttribute('hidden', '');
+    }
 }
 
 // Now instantiate your objects.
