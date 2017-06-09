@@ -80,7 +80,28 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+    }
+
+
+    function checkCollisions() {
+        if (ifCollide()) {
+            reset();
+        }
+    }
+
+    function ifCollide() {
+        for (var i = 0; i < allEnemies.length; i++) {
+            if (ifOverlap(allEnemies[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function ifOverlap(enemy) {
+        return Math.abs(enemy.x - player.x) < 30 && Math.abs(enemy.y - player.y) < 30;
     }
 
     /* This is called by the update function and loops through all of the
@@ -159,7 +180,10 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        player.init();
+        allEnemies.forEach(function (enemy) {
+            enemy.init();
+        })
     }
 
     /* Go ahead and load all of the images we know we're going to need to
