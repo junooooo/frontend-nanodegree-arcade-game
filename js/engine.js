@@ -27,6 +27,7 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
+    global.paused = false;
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
@@ -47,8 +48,10 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
-        render();
+        if (!global.paused) {
+            update(dt);
+            render();
+        }
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -88,7 +91,18 @@ var Engine = (function(global) {
 
     function checkCollisions() {
         if (ifCollide()) {
-            showTips('<p>Oops! You are bitten by bugs.</p> <p>Try again.</p>');
+            player.countFailure ++;
+
+            // when player fails more than 5 times, we pause the game
+            // player can resume by close the modal
+            if (player.countFailure > 5) {
+                global.paused = true;
+            }
+
+            var tips = player.countFailure > 5 ?
+                '<p>Oops. Fail more than 5 times.</p><p>Take a break :)</p>'
+                : '<p>Oops! You are bitten by bugs.</p> <p>Try again.</p>';
+            showTips(tips);
             reset();
         }
     }
@@ -188,6 +202,17 @@ var Engine = (function(global) {
             enemy.init();
         })
     }
+
+    function togglePause() {
+        // when player pause the game, the button shows 'Resume'
+        document.querySelector('.pause').textContent = global.paused ? 'Pause' : 'Resume';
+        global.paused = !global.paused;
+    }
+
+    document.querySelector('.pause').addEventListener('click', function (e) {
+        e.preventDefault();
+       togglePause();
+    });
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when

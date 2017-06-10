@@ -68,6 +68,7 @@ var Player = function () {
 
     player.score = 0;
     player.level = 1;
+    player.countFailure = 0;
 
     return player;
 };
@@ -120,14 +121,20 @@ Player.prototype.handleInput = function (direction) {
     }
 };
 
+// When player reach the river, we show success message first.
+// Then, update game level and score and initialize player's position.
+// Finally, we increase the number of enemy every other level.
+
 Player.prototype.onSuccess = function () {
     showTips('<p>Success!</p> <p>Score + ' + (this.level * 10) + '</p>');
 
-    this.init();
     this.score += this.level * 10;
     this.level++;
+    this.countFailure = 0;
 
     updateLevel(this.level, this.score);
+
+    this.init();
 
     while (allEnemies.length < Math.ceil(this.level/2)) {
         allEnemies.push(new Enemy(this.level));
@@ -135,7 +142,7 @@ Player.prototype.onSuccess = function () {
 
     allEnemies.forEach(function (enemy) {
         enemy.init();
-    })
+    });
 };
 
 function updateLevel(level, score) {
@@ -146,7 +153,11 @@ function updateLevel(level, score) {
 function showTips(tips) {
     document.querySelector('.tips').innerHTML = tips;
     toggleModal(true);
-    setTimeout(function(){toggleModal(false)}, 1000);
+
+    // when the game is not paused, wo dismiss the modal automatically
+    if (!paused) {
+        setTimeout(function(){toggleModal(false)}, 1000);
+    }
 }
 
 function toggleModal(show) {
@@ -179,5 +190,17 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    if (!paused) {
+        player.handleInput(allowedKeys[e.keyCode]);
+    }
+});
+
+document.querySelector('.modal .close').addEventListener('click', function (e) {
+    e.preventDefault();
+    toggleModal(false);
+
+    // if the game is paused, close the modal will resume it.
+    if (paused) {
+        paused = false;
+    }
 });
