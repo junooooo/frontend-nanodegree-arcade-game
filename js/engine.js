@@ -88,7 +88,7 @@ var Engine = (function(global) {
 
     function checkCollisions() {
         if (ifCollide()) {
-            showTips('Oops! You are bitten by bugs. Try again.');
+            showTips('<p>Oops! You are bitten by bugs.</p> <p>Try again.</p>');
             reset();
         }
     }

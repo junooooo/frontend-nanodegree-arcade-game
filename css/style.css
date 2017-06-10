@@ -14,18 +14,21 @@ body {
 }
 
 .modal div {
-    margin: auto;
     width: 400px;
     height: 100px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
     background-color: #ffffff;
     border: 1px solid #ccc;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 2px;
     padding: 30px;
     text-align: center;
-    line-height: 100px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.tips {
+    margin: auto;
 }

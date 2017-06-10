@@ -8,17 +8,36 @@ var HEIGHT_OFFSET = 25;
 var MAX_WIDTH = BLOCK_WIDTH * 5;
 var MAX_HEIGHT = BLOCK_HEIGHT * 6;
 
+// Superclass of player and enemy
+var Character = function(sprite) {
+    if (typeof this.init === 'function') {
+        this.init();
+    }
+    this.sprite = sprite;
+};
+
+// Draw the character on the screen
+Character.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
 
 // Enemies our player must avoid
+// Enemy inherits from Character
 var Enemy = function(level) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-    this.speed = Math.random() * 70 * level + 50;
+    var enemy = Object.create(Enemy.prototype);
+    Character.call(enemy, 'images/enemy-bug.png');
+    enemy.speed = Math.random() * 60 * level + 50;
+    return enemy;
 };
+
+// inherit from Character
+Enemy.prototype = Object.create(Character.prototype);
+Enemy.prototype.constructor = Enemy;
 
 Enemy.prototype.init = function () {
     this.x = Math.random() * BLOCK_WIDTH / 2;
@@ -38,20 +57,23 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+// Player inherits from Character
 
 var Player = function () {
-    this.sprite = 'images/char-boy.png';
-    this.score = 0;
-    this.level = 1;
+    var player = Object.create(Player.prototype);
+    Character.call(player, 'images/char-boy.png');
+
+    player.score = 0;
+    player.level = 1;
+
+    return player;
 };
+
+Player.prototype = Object.create(Character.prototype);
+Player.prototype.constructor = Player;
 
 Player.prototype.init = function () {
     this.x = 200;
@@ -99,14 +121,15 @@ Player.prototype.handleInput = function (direction) {
 };
 
 Player.prototype.onSuccess = function () {
-    showTips('Success!');
+    showTips('<p>Success!</p> <p>Score + ' + (this.level * 10) + '</p>');
+
     this.init();
-    this.score++;
+    this.score += this.level * 10;
     this.level++;
 
-    updateLevel(this.level);
+    updateLevel(this.level, this.score);
 
-    while (allEnemies.length < this.level) {
+    while (allEnemies.length < Math.ceil(this.level/2)) {
         allEnemies.push(new Enemy(this.level));
     }
 
@@ -115,12 +138,13 @@ Player.prototype.onSuccess = function () {
     })
 };
 
-function updateLevel(level) {
+function updateLevel(level, score) {
     document.querySelector('.level').textContent = level;
+    document.querySelector('.score').textContent = score;
 }
 
 function showTips(tips) {
-    document.querySelector('.modal div').textContent = tips;
+    document.querySelector('.tips').innerHTML = tips;
     toggleModal(true);
     setTimeout(function(){toggleModal(false)}, 1000);
 }
