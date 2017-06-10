@@ -1,11 +1,12 @@
+"use strict";
+
 // some constants
 
 var BLOCK_WIDTH = 101;
 var BLOCK_HEIGHT = 83;
-var HEIGHT_OFFSET = 40;
+var HEIGHT_OFFSET = 25;
 var MAX_WIDTH = BLOCK_WIDTH * 5;
 var MAX_HEIGHT = BLOCK_HEIGHT * 6;
-var PLAY_STEP_WIDTH = 30;
 
 
 // Enemies our player must avoid
@@ -21,7 +22,7 @@ var Enemy = function(level) {
 
 Enemy.prototype.init = function () {
     this.x = Math.random() * BLOCK_WIDTH / 2;
-    this.y = Math.random() * BLOCK_HEIGHT * 2.5+ HEIGHT_OFFSET;
+    this.y = getRandomInt(1, 3) * BLOCK_HEIGHT - HEIGHT_OFFSET;
 };
 
 // Update the enemy's position, required method for game
@@ -63,8 +64,8 @@ Player.prototype.update = function () {
         this.x = 0;
     }
 
-    if (this.x > MAX_WIDTH) {
-        this.x = MAX_WIDTH;
+    if (this.x > MAX_WIDTH - BLOCK_WIDTH) {
+        this.x = MAX_WIDTH - BLOCK_WIDTH;
     }
 
     if (this.y < 0) {
@@ -72,7 +73,7 @@ Player.prototype.update = function () {
     }
 
     if (this.y > MAX_HEIGHT - BLOCK_HEIGHT) {
-        this.y = MAX_HEIGHT - BLOCK_HEIGHT;
+        this.y = this.y - BLOCK_HEIGHT;
     }
 };
 
@@ -83,16 +84,16 @@ Player.prototype.render = function () {
 Player.prototype.handleInput = function (direction) {
     switch (direction) {
         case 'left':
-            this.x -= PLAY_STEP_WIDTH;
+            this.x -= BLOCK_WIDTH;
             break;
         case 'right':
-            this.x += PLAY_STEP_WIDTH;
+            this.x += BLOCK_WIDTH;
             break;
         case 'up':
-            this.y -= PLAY_STEP_WIDTH;
+            this.y -= BLOCK_HEIGHT;
             break;
         case 'down':
-            this.y += PLAY_STEP_WIDTH;
+            this.y += BLOCK_HEIGHT;
             break;
     }
 };
@@ -131,6 +132,11 @@ function toggleModal(show) {
         document.querySelector('.modal').setAttribute('hidden', '');
     }
 }
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
