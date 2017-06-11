@@ -1,6 +1,32 @@
 frontend-nanodegree-arcade-game
 ===============================
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+## Quick start
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+1. Clone this repo.
+```
+git clone https://github.com/junooooo/frontend-nanodegree-arcade-game.git
+```
+2. Move to the appropriate directory: `cd frontend-nanodegree-arcade-game`.
+3. Open a browser
+4. Drag and drop the `index.html` file to the browser to open it.
+5. Enjoy the game. :)
+
+## How to play
+
+The object of the game is to move the player through the grassland and reach the river without being hit by enemies.
+Every time the player reaches the river, the player is awarded of level*10 points and then the game level increases.
+With increasing game level, there will be more enemies and faster speed of their movement.
+
+The game can be paused/resumed at any time by clicking the Pause button.
+
+### Player movement
+
+Use the arrow keys (up, down, left, and right) to move the player.
+
+## Learning resources
+
+- [面向对象的 Javascript 编程 - Udacity](https://classroom.udacity.com/courses/ud015/lessons/2794468536/concepts/27908185380923)
+- [OOP in JS, Part 2 : Inheritance](http://phrogz.net/js/classes/OOPinJS2.html)
+- [How to write a good README](https://stackoverflow.com/questions/2304863/how-to-write-a-good-readme/2304870#2304870)
+
