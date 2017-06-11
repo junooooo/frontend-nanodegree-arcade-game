@@ -12,6 +12,8 @@ git clone https://github.com/junooooo/frontend-nanodegree-arcade-game.git
 4. Drag and drop the `index.html` file to the browser to open it.
 5. Enjoy the game. :)
 
+or, just [play online](https://junooooo.github.io/frontend-nanodegree-arcade-game/)
+
 ## How to play
 
 The object of the game is to move the player through the grassland and reach the river without being hit by enemies.
